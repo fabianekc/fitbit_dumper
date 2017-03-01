@@ -33,10 +33,6 @@
 // ----------------------------------------------------------------------------
 // make configuration changes here
 
-var FB_CLIENT_ID = '';
-var FB_CLIENT_SECRET = '';
-
-
 var CSV_DELIMITER = ';';
 var CSV_QUOTE = '"';
 //var CSV_LOCALE = 'de-DE';
@@ -99,14 +95,16 @@ var ignored_count = 0;
 
 // command line options
 var options = stdio.getopt({
-	'start': { key: 's', description: 'Start date ' + DATE_FORMAT, args: 1 },
-	'end': { key: 'e', description: 'End date ' + DATE_FORMAT, args: 1 },
-	'force': { key: 'f', description: 'Force download from FitBit, even if local data already exists', args: 1 },
-	'verbose': { key: 'v', description: 'Verbose debug output' },
-	'quiet': { key: 'q', description: 'No output at all; overrules --verbose; assumes YES to all questions' },
-	'dbinit': { key: 'i', description: '(Re)Initialize database. ' + 'DELETES ALL EXISTING LOCAL DATA!'.red },
-	'dbdump': { key: 'd', description: 'Dump out database as CSV' },
-	'register': { key: 'r', description: '(Re)Register with FitBit' }
+	'start':     { key: 's', description: 'Start date ' + DATE_FORMAT, args: 1 },
+	'end':       { key: 'e', description: 'End date ' + DATE_FORMAT, args: 1 },
+	'force':     { key: 'f', description: 'Force download from FitBit, even if local data already exists', args: 1 },
+	'verbose':   { key: 'v', description: 'Verbose debug output' },
+	'quiet':     { key: 'q', description: 'No output at all; overrules --verbose; assumes YES to all questions' },
+	'dbinit':    { key: 'i', description: '(Re)Initialize database. ' + 'DELETES ALL EXISTING LOCAL DATA!'.red },
+	'dbdump':    { key: 'd', description: 'Dump out database as CSV' },
+	'register':  { key: 'r', description: '(Re)Register with FitBit' },
+	'client_id': { key: 'c', description: 'Client-id for OAuth2 authorization', args: 1 },
+	'secret':    { key: 't', description: 'Secret for OAuth2 authorization', args: 1 }
 });
 
 
@@ -124,8 +122,11 @@ function main() {
 
 	log(LOG_INFO, true, 'FitBit Dumper, Version ' + VERSION);
 
+	var FB_CLIENT_ID = options.client_id;
+	var FB_CLIENT_SECRET = options.secret;
+
 	if (!FB_CLIENT_ID || !FB_CLIENT_SECRET) {
-		deferred.reject(new Error('Fitbit CLIENT_ID or CLIENT_SECRET not set in script code! ' +
+		deferred.reject(new Error('Fitbit CLIENT_ID or CLIENT_SECRET not available! ' +
 			'See http://www.min.at/prinz/fitbit_dumper for more infos'));
 		return deferred.promise;
 	}
