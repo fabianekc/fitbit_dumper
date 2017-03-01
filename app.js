@@ -62,7 +62,7 @@ var FAKE_URL = 'http://fb.dumper';
 var TOKEN_FILE = './fitbit.oauth';
 
 var FitbitClient = require("fitbit-node"),
-    fitbitClient = new FitbitClient(FB_CLIENT_ID, FB_CLIENT_SECRET);
+    fitbitClient = new FitbitClient(options.client_id, options.secret);
 
 var VERSION = '1.2.0';
 var LOG_DEBUG = 0;
